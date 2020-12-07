@@ -1,11 +1,11 @@
 {
-  "name": "node-ts-starter",
+  "name": "node-env-parser",
   "version": "1.0.0",
-  "repository": "git@github.com:gabrielmethot/node-ts-starter.git",
+  "repository": "git@github.com:gabrielmethot/node-env-parser.git",
   "author": "Gabriel Méthot",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node ./src/index.ts",
+    "start": "ts-node ./exemple/index.ts",
     "dev": "yarn start",
     "build": "tsc",
     "serve": "node ./build/index.js",
