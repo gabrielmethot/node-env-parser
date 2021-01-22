@@ -1,62 +1,89 @@
-import { Schema, ProcessEnvironment, SupportedPrimitive, Config, NumberProperty } from "./models";
-import TypeChecker from "./type-checking";
-import TypeCaster from "./type-casting";
-import ErrorMessage from "./error-messages";
+export interface Environment {
+  [index: string]: EnvironmentVariable;
+}
 
-export const createSchema = <T extends Schema>(schema: T): T => schema;
+export type EnvironmentVariable = string | undefined;
 
-export const parseEnv = <T extends Schema>(processEnv: ProcessEnvironment, schema: T): Config<T> => {
-  const schemaProperties = Object.entries(schema);
-  const config: { [index: string]: SupportedPrimitive } = {};
+export interface StringOptions {
+  default?: string;
+}
 
-  for (const schemaProperty of schemaProperties) {
-    const [name, value] = schemaProperty;
-    const valueInProcessEnv = processEnv[name];
+export interface NumberOptions {
+  default?: number;
+  parser?: (value: EnvironmentVariable) => number;
+}
 
-    if (valueInProcessEnv === undefined) {
-      if (value.default !== undefined) {
-        config[name] = value.default;
-        continue;
-      }
+export interface BooleanOptions {
+  default?: boolean;
+}
 
-      throw new Error(ErrorMessage.isMissing(name, value.type));
-    }
+export class EnvParser {
+  private env: Environment;
 
-    if (TypeChecker.isString(value.type)) {
-      if (TypeChecker.isString(valueInProcessEnv)) {
-        config[name] = valueInProcessEnv;
-        continue;
-      }
-
-      throw new Error(ErrorMessage.shouldBeString(name, valueInProcessEnv));
-    }
-
-    if (TypeChecker.isNumber(value.type)) {
-      if (TypeChecker.isSerializedNumber(valueInProcessEnv)) {
-        const parser = (value as NumberProperty)?.parser ?? TypeCaster.toNumber;
-        config[name] = parser(valueInProcessEnv);
-        continue;
-      }
-
-      throw new Error(ErrorMessage.shouldBeNumber(name, valueInProcessEnv));
-    }
-
-    if (TypeChecker.isBoolean(value.type)) {
-      if (TypeChecker.isSerializedBoolean(valueInProcessEnv)) {
-        config[name] = TypeCaster.stringToBoolean(valueInProcessEnv);
-        continue;
-      }
-
-      throw new Error(ErrorMessage.shouldBeBoolean(name, valueInProcessEnv));
-    }
+  constructor(env: Environment) {
+    this.env = env;
   }
 
-  return config as Config<T>;
-};
+  public parseString(name: string, options?: StringOptions): string {
+    const value = this.env?.[name];
 
-const nodeEnvParser = {
-  createSchema,
-  parseEnv,
-};
+    if (value === undefined) {
+      if (options?.default === undefined) {
+        throw new Error(`${name} environment variable is undefined and *no* default value was provided`);
+      }
 
-export default nodeEnvParser;
+      return options.default;
+    }
+
+    return value;
+  }
+
+  public parseNumber(name: string, options?: NumberOptions): number {
+    const value = this.env?.[name];
+
+    if (value === undefined) {
+      if (options?.default === undefined) {
+        throw new Error(`${name} environment variable is undefined and *no* default value was provided`);
+      }
+
+      return options.default;
+    }
+
+    const usedParser = options?.parser ?? this.numberParser;
+    const parsedValue = usedParser(value);
+
+    if (isNaN(parsedValue)) {
+      throw new Error(`Parsing of ${name} environment variable as a number failed`);
+    }
+
+    return usedParser(value);
+  }
+
+  public parseBoolean(name: string, options?: BooleanOptions): boolean {
+    const value = this.env?.[name];
+
+    if (value === undefined) {
+      if (options?.default === undefined) {
+        throw new Error(`${name} environment variable is undefined and *no* default value was provided`);
+      }
+
+      return options.default;
+    }
+
+    if (value === "true") {
+      return true;
+    }
+
+    if (value === "false") {
+      return false;
+    }
+
+    throw new Error(`Expected ${name} environment variable to be one of ["true", "false"] but received "${value}"`);
+  }
+
+  protected numberParser(value: EnvironmentVariable): number {
+    return parseInt(value as string, 10);
+  }
+}
+
+export default EnvParser;
