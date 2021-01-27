@@ -56,7 +56,7 @@ export class EnvParser {
       throw new Error(`Parsing of ${name} environment variable as a number failed`);
     }
 
-    return usedParser(value);
+    return parsedValue;
   }
 
   public parseBoolean(name: string, options?: BooleanOptions): boolean {
