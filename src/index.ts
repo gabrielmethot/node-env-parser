@@ -10,8 +10,10 @@ export interface StringOptions {
 
 export interface NumberOptions {
   default?: number;
-  parser?: (value: EnvironmentVariable) => number;
+  parser?: NumberParser;
 }
+
+export type NumberParser = (value: Exclude<EnvironmentVariable, undefined>) => number;
 
 export interface BooleanOptions {
   default?: boolean;
@@ -81,9 +83,9 @@ export class EnvParser {
     throw new Error(`Expected ${name} environment variable to be one of ["true", "false"] but received "${value}"`);
   }
 
-  protected numberParser(value: EnvironmentVariable): number {
-    return parseInt(value as string, 10);
-  }
+  protected numberParser: NumberParser = (value) => {
+    return parseInt(value, 10);
+  };
 }
 
 export default EnvParser;

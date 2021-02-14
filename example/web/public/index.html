@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>node-env-parser</h1>
+    <p id="env"></p>
+    <script type="module">
+      import { EnvParser } from "./build/esm/index.js";
+
+      // Next.js exposes some environment variables loaded by the Node.js process
+      // to the browser -> The following variable wouldn't be declared
+      const process = {
+        env: {
+          ENABLE_ANALYTICS: "true",
+          VERSION: "1.8",
+        },
+      };
+
+      const parser = new EnvParser(process.env);
+
+      const BASE_URL = parser.parseString("BASE_URL", {
+        default: "http://localhost",
+      });
+
+      const ENABLE_ANALYTICS = parser.parseBoolean("ENABLE_ANALYTICS");
+
+      const VERSION = parser.parseNumber("VERSION", {
+        default: 1.0,
+        parser: (value) => parseFloat(value),
+      });
+
+      document.getElementById("env").innerHTML = JSON.stringify({ BASE_URL, ENABLE_ANALYTICS, VERSION });
+    </script>
+  </body>
+</html>
