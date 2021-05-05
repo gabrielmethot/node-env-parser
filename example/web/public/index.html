@@ -4,10 +4,8 @@
     <h1>node-env-parser</h1>
     <p id="env"></p>
     <script type="module">
-      import { EnvParser } from "./build/esm/index.js";
+      import { EnvParser } from "./build/index";
 
-      // Next.js exposes some environment variables loaded by the Node.js process
-      // to the browser -> The following variable wouldn't be declared
       const process = {
         env: {
           ENABLE_ANALYTICS: "true",

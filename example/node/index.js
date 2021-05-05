@@ -1,4 +1,4 @@
-const { EnvParser } = require("../../build/index.js");
+const { EnvParser } = require("../../build/index");
 
 process.env.ENABLE_ANALYTICS = "true";
 process.env.VERSION = "1.8";

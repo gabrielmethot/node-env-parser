@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2019", // 100% support for Node.js 12.4.0 and above: https://node.green/#ES2019
+    "target": "ES2015",
     "noEmit": true,
     "checkJs": true,
     "strict": true,

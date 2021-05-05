@@ -6,7 +6,7 @@ Utility functions to parse Node.js-like environment variables to type-checked va
 process.env.ENABLE_ANALYTICS = "true";
 process.env.VERSION = "1.8";
 
-const env: NodeJS.ProcessEnv = process.env;
+const env = process.env;
 const parser = new EnvParser(env);
 
 const BASE_URL: string = parser.parseString("BASE_URL", {
@@ -31,7 +31,9 @@ console.log(JSON.stringify({ BASE_URL, ENABLE_ANALYTICS, VERSION }));
 If an environment variable is defined, then it must match the type of the used parsing function. Otherwise, it throws an exception.
 
 ```ts
-process.env.ENABLE_ANALYTICS = "No Thanks!";
+process.env = {
+  ENABLE_ANALYTICS: "No Thanks!",
+};
 
 const parser = new EnvParser(process.env);
 parser.parseBoolean("ENABLE_ANALYTICS"); // Throws an exception
@@ -78,13 +80,13 @@ npm run prebuild
 #### Start an example Node.js app (requires CommonJS build)
 
 ```
-npm run serve:node
+npm run example:node
 ```
 
 #### Start an example web app (requires ES2015 build)
 
 ```
-npm run serve:browser
+npm run example:browser
 ```
 
 #### Detect TypeScript errors (does not emit a build)

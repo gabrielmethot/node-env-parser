@@ -1,13 +1,11 @@
 import { EnvParser, Environment } from "../index";
 
-describe(`${EnvParser.name}.${EnvParser.prototype.parseString.name}()`, () => {
+describe(`String parser`, () => {
   it("throws an exception when environment variable is undefined and option's default value is *not* provided", () => {
     const env: Environment = {};
     const envParser = new EnvParser(env);
 
-    expect(() => envParser.parseString("NODE_ENV")).toThrowError(
-      "NODE_ENV environment variable is undefined and *no* default value was provided"
-    );
+    expect(() => envParser.parseString("NODE_ENV")).toThrowError("NODE_ENV environment variable is not defined");
   });
 
   it("returns options's default value when environment variable is undefined", () => {
@@ -25,14 +23,12 @@ describe(`${EnvParser.name}.${EnvParser.prototype.parseString.name}()`, () => {
   });
 });
 
-describe(`${EnvParser.name}.${EnvParser.prototype.parseNumber.name}()`, () => {
+describe(`Number parser`, () => {
   it("throws an exception when environment variable is undefined and options's default value is *not* provided", () => {
     const env: Environment = {};
     const envParser = new EnvParser(env);
 
-    expect(() => envParser.parseNumber("PORT")).toThrowError(
-      "PORT environment variable is undefined and *no* default value was provided"
-    );
+    expect(() => envParser.parseNumber("PORT")).toThrowError("PORT environment variable is not defined");
   });
 
   it("returns options's default value when environment variable is undefined", () => {
@@ -57,7 +53,7 @@ describe(`${EnvParser.name}.${EnvParser.prototype.parseNumber.name}()`, () => {
     const envParser = new EnvParser(env);
 
     expect(() => envParser.parseNumber("NOT_A_NUMBER")).toThrowError(
-      "Parsing of NOT_A_NUMBER environment variable as a number failed"
+      "NOT_A_NUMBER environment variable cannot be converted to a number"
     );
   });
 
@@ -69,13 +65,13 @@ describe(`${EnvParser.name}.${EnvParser.prototype.parseNumber.name}()`, () => {
   });
 });
 
-describe(`${EnvParser.name}.${EnvParser.prototype.parseBoolean.name}()`, () => {
+describe(`Boolean parser`, () => {
   it("throws an exception when environment variable is undefined and options's default value is *not* provided", () => {
     const env: Environment = {};
     const envParser = new EnvParser(env);
 
     expect(() => envParser.parseBoolean("TOGGLE_FEATURE")).toThrowError(
-      "TOGGLE_FEATURE environment variable is undefined and *no* default value was provided"
+      "TOGGLE_FEATURE environment variable is not defined"
     );
   });
 
@@ -91,7 +87,7 @@ describe(`${EnvParser.name}.${EnvParser.prototype.parseBoolean.name}()`, () => {
     const envParser = new EnvParser(env);
 
     expect(() => envParser.parseBoolean("TOGGLE_FEATURE")).toThrowError(
-      `Expected TOGGLE_FEATURE environment variable to be one of ["true", "false"] but received "Hello World!"`
+      "TOGGLE_FEATURE environment variable cannot be converted to a boolean"
     );
   });
 
