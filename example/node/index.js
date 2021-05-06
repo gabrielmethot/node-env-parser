@@ -2,6 +2,7 @@ const { EnvParser } = require("../../build/index");
 
 process.env.ENABLE_ANALYTICS = "true";
 process.env.VERSION = "1.8";
+
 const parser = new EnvParser(process.env);
 
 const BASE_URL = parser.parseString("BASE_URL", {

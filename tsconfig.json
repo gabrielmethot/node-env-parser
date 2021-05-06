@@ -1,17 +1,19 @@
 {
   "compilerOptions": {
     "target": "ES2015",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "noEmit": true,
-    "checkJs": true,
+    "skipLibCheck": true,
     "strict": true,
+    "checkJs": true,
+    "allowUnreachableCode": false,
+    "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "noUncheckedIndexedAccess": true
   },
-  "exclude": ["./build/**/*.js"]
+  "exclude": ["./build/**/*.js", "jest.config.js"]
 }
