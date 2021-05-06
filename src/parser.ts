@@ -1,10 +1,10 @@
 import * as ErrorMessage from "./error-message";
 
+export type EnvironmentVariable = string | undefined;
+
 export interface Environment {
   [index: string]: EnvironmentVariable;
 }
-
-export type EnvironmentVariable = string | undefined;
 
 export type SupportedType = string | number | boolean;
 
