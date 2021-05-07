@@ -8,25 +8,25 @@
 
       const process = {
         env: {
-          ENABLE_ANALYTICS: "true",
           VERSION: "1.8",
+          ENABLE_ANALYTICS: "true",
         },
       };
 
       const parser = new EnvParser(process.env);
 
-      const BASE_URL = parser.parseString("BASE_URL", {
+      const HOSTNAME = parser.parseString("HOSTNAME", {
         default: "http://localhost",
       });
-
-      const ENABLE_ANALYTICS = parser.parseBoolean("ENABLE_ANALYTICS");
 
       const VERSION = parser.parseNumber("VERSION", {
         default: 1.0,
         parser: (value) => parseFloat(value),
       });
 
-      document.getElementById("env").innerHTML = JSON.stringify({ BASE_URL, ENABLE_ANALYTICS, VERSION });
+      const ENABLE_ANALYTICS = parser.parseBoolean("ENABLE_ANALYTICS");
+
+      document.getElementById("env").innerHTML = JSON.stringify({ HOSTNAME, VERSION, ENABLE_ANALYTICS });
     </script>
   </body>
 </html>

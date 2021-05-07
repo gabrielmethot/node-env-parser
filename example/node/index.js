@@ -1,16 +1,14 @@
 const { EnvParser } = require("../../build/index");
 
-process.env.ENABLE_ANALYTICS = "true";
-process.env.VERSION = "1.8";
+process.env = {
+  VERSION: "1.8",
+  ENABLE_ANALYTICS: "true",
+};
 
 const parser = new EnvParser(process.env);
 
-const BASE_URL = parser.parseString("BASE_URL", {
+const HOSTNAME = parser.parseString("HOSTNAME", {
   default: "http://localhost",
-});
-
-const ENABLE_ANALYTICS = parser.parseBoolean("ENABLE_ANALYTICS", {
-  default: false,
 });
 
 const VERSION = parser.parseNumber("VERSION", {
@@ -18,4 +16,8 @@ const VERSION = parser.parseNumber("VERSION", {
   parser: (value) => parseFloat(value),
 });
 
-console.log(JSON.stringify({ BASE_URL, ENABLE_ANALYTICS, VERSION }));
+const ENABLE_ANALYTICS = parser.parseBoolean("ENABLE_ANALYTICS", {
+  default: false,
+});
+
+console.log(JSON.stringify({ HOSTNAME, VERSION, ENABLE_ANALYTICS }));

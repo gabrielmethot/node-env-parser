@@ -3,27 +3,28 @@
 Utility functions to parse Node.js-like environment variables to type-checked values.
 
 ```ts
-process.env.ENABLE_ANALYTICS = "true";
-process.env.VERSION = "1.8";
+process.env = {
+  VERSION: "1.8",
+  ENABLE_ANALYTICS: "true",
+};
 
-const env = process.env;
-const parser = new EnvParser(env);
+const parser = new EnvParser(process.env);
 
-const BASE_URL: string = parser.parseString("BASE_URL", {
+const HOSTNAME: string = parser.parseString("HOSTNAME", {
   default: "http://localhost",
+});
+
+const VERSION: number = parser.parseNumber("VERSION", {
+  default: 1.0,
+  parser: (value: string) => parseFloat(value),
 });
 
 const ENABLE_ANALYTICS: boolean = parser.parseBoolean("ENABLE_ANALYTICS", {
   default: false,
 });
 
-const VERSION: number = parser.parseNumber("VERSION", {
-  default: 1.0,
-  parser: (value) => parseFloat(value),
-});
-
-// {"BASE_URL":"http://localhost","ENABLE_ANALYTICS":true,"VERSION":1.8}
-console.log(JSON.stringify({ BASE_URL, ENABLE_ANALYTICS, VERSION }));
+// {"HOSTNAME":"http://localhost","VERSION":1.8,"ENABLE_ANALYTICS":true}
+console.log(JSON.stringify({ HOSTNAME, VERSION, ENABLE_ANALYTICS }));
 ```
 
 ## Error handling
