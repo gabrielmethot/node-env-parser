@@ -4,11 +4,17 @@
   "repository": "git@github.com:gabrielmethot/node-env-parser.git",
   "author": "Gabriel Méthot",
   "license": "MIT",
-  "main": "build/index.js",
-  "module": "build/esm/index.js",
+  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
-    "build": "npm run build:cjs && npm run build:esm",
-    "build:cjs": "tsc -p tsconfig.build.json",
+    "build": "npm run build:umd && npm run build:esm",
+    "build:umd": "tsc -p tsconfig.build.json",
     "build:esm": "tsc -p tsconfig.build.esm.json",
     "example:node": "node example/node/index.js",
     "example:browser": "node example/web/server.js",

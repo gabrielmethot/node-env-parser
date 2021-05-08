@@ -54,10 +54,10 @@ parser.parseString("SOME VALUE"); // Throws an exception
 
 ### Scripts
 
-#### Launch build targetting CommonJS
+#### Launch build targetting UMD
 
 ```
-npm run build:cjs
+npm run build:umd
 ```
 
 #### Launch build targetting ES2015

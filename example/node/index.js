@@ -1,4 +1,4 @@
-const { EnvParser } = require("../../build/index");
+const { EnvParser } = require("../../dist/index");
 
 process.env = {
   VERSION: "1.8",

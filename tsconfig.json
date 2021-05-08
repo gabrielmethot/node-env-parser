@@ -15,5 +15,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true
   },
-  "exclude": ["./build/**/*.js", "jest.config.js"]
+  "exclude": ["./dist/**/*.js", "jest.config.js"]
 }
